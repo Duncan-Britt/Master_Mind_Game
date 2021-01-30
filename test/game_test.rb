@@ -26,8 +26,34 @@ class CpuCodeMakerTest < Minitest::Test
   end
 
   def test_guess_check_returns_clues
-    skip
+
     expected = "x x x x"
-    assert_equal expected, CpuCodeMaker.new.guess_check([1,1,1,1])
+    a = CpuCodeMaker.new
+    a.code=([1,1,1,1])
+    assert_equal expected, a.get_clues([1,1,1,1])
+  end
+
+  def test_guess_check_2
+
+    expected = "x o"
+    a = CpuCodeMaker.new
+    a.code=([1,3,5,1])
+    assert_equal expected, a.get_clues([1,2,3,4])
+  end
+
+  def test_guess_check_3
+
+    expected = "x o o"
+    a = CpuCodeMaker.new
+    a.code=([2,1,4,2])
+    assert_equal expected, a.get_clues([2,2,2,4])
+  end
+
+  def test_guess_check_4
+
+    expected = "x o o"
+    a = CpuCodeMaker.new
+    a.code=([2,2,2,4])
+    assert_equal expected, a.get_clues([2,1,4,2])
   end
 end
