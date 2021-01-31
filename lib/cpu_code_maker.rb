@@ -7,6 +7,7 @@ class CpuCodeMaker
   def initialize
     @code = []
     number_generator
+    puts "Guess the code"
   end
 
   private

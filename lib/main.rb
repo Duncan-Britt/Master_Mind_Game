@@ -15,7 +15,7 @@ class Main
     if input == 'b'
       HumanCodeBreaker.new
     elsif input == 'm'
-      HumanCodeMaker.new
+      CpuCodeBreaker.new
     elsif input == 'i'
       puts "\n\n" +
            "instructions will go here\n" +
