@@ -28,4 +28,4 @@ class Main
   end
 end
 
-#Main.new #comment out for tests
+Main.new #comment out for tests

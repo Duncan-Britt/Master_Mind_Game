@@ -27,13 +27,19 @@ class CpuCodeBreaker
   def rounds
     until @round_num > 12
       return if self.round
+      update_codes
       @round_num += 1
     end
     puts "Game over. The code was #{@human.code}"
   end
 
+  def update_codes
+
+  end
+
   def round
     guess = self.make_guess
+    p guess
     puts "#{@round_num}: #{@human.get_clues(guess)}"
 
     if @human.get_clues(guess) == "x x x x"
@@ -43,7 +49,10 @@ class CpuCodeBreaker
   end
 
   def make_guess
-    p [1,1,2,2]
-    [1,1,2,2]
+    if @round_num == 1
+      [1,1,2,2]
+    else
+      codes.sample
+    end
   end
 end
