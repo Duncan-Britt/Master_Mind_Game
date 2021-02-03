@@ -39,7 +39,7 @@ class CpuCodeBreaker
   def update_codes
     x_num = clues.count('x')
     o_num = clues.count('o')
-    p @codes
+
     @codes = @codes.select do |code|
                match_idx = []
                count_matches = 0
@@ -49,33 +49,33 @@ class CpuCodeBreaker
                    match_idx << i
                  end
                end
+
                temp_code = code.select.with_index do |dij, idx|
-                             unless match_idx.include?(idx)
-                               true
-                             end
+                             !match_idx.include?(idx)
                end
                temp_guess = guess.select.with_index do |dij, idx|
-                              unless match_idx.include?(idx)
-                                true
-                              end
-              end
-              os_match = [1,2,3,4,5,6].all? do |dij|
-                                if temp_guess.count(dij) == temp_code.count(dij)
-                                  true
-                                end
-              end
-              if (count_matches == x_num)# && (os_match)
-                true
-              else
-                false
-              end
+                              !match_idx.include?(idx)
+               end
+
+               count_same = 0
+               [1,2,3,4,5,6].each do |dij|
+                 if temp_guess.count(dij) == temp_code.count(dij)
+                  count_same += 1
+                 end
+                 puts "temp_guess count: #{temp_guess.count(dij)}, temp_code count: #{temp_code.count(dij)}, digit: #{dij}"
+               end
+               puts "#{o_num} o's and #{count_same} close matches in #{code}\n" +
+               "the code w/o exact matches was #{temp_code}\n" +
+               "the guess w/o exact matches was #{temp_guess}"
+               count_matches == x_num #&& o_num == count_same
     end
-    p @codes
+
   end
 
   def round
     @guess = self.make_guess
     p @guess
+    #puts "All codes at this point\n\n\n\n #{@codes}"
     self.clues= @human.get_clues(@guess)
     puts "#{@round_num}: #{@clues}"
 
@@ -89,7 +89,8 @@ class CpuCodeBreaker
     if @round_num == 1
       [1,1,2,2]
     else
-      @codes.sample
+      #@codes.sample
+      @codes[0]
     end
   end
 end
