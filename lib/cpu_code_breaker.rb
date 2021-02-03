@@ -57,19 +57,22 @@ class CpuCodeBreaker
                               !match_idx.include?(idx)
                end
 
-               count_same = 0
+               count_same = 0 # tracking close matches for a given code compared to the guess
                [1,2,3,4,5,6].each do |dij|
-                 if temp_guess.count(dij) == temp_code.count(dij)
-                  count_same += 1
+                 if temp_code.include?(dij)
+                   if temp_guess.count(dij) <= temp_code.count(dij)
+                     temp_guess.count(dij).times do
+                       count_same += 1
+                     end
+                   else
+                     temp_code.count(dij).times do
+                       count_same += 1
+                     end
+                   end
                  end
-                 puts "temp_guess count: #{temp_guess.count(dij)}, temp_code count: #{temp_code.count(dij)}, digit: #{dij}"
                end
-               puts "#{o_num} o's and #{count_same} close matches in #{code}\n" +
-               "the code w/o exact matches was #{temp_code}\n" +
-               "the guess w/o exact matches was #{temp_guess}"
-               count_matches == x_num #&& o_num == count_same
+               count_matches == x_num && o_num == count_same
     end
-
   end
 
   def round
