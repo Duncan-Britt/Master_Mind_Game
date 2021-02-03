@@ -64,7 +64,7 @@ class CpuCodeBreaker
                                   true
                                 end
               end
-              if (count_matches == x_num) && (os_match)
+              if (count_matches == x_num)# && (os_match)
                 true
               else
                 false
