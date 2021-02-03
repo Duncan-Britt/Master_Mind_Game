@@ -1,12 +1,15 @@
 class CpuCodeBreaker
   #private
-  attr_accessor :codes
+  attr_accessor :codes, :clues
+  attr_reader :guess
 
   public
   def initialize
     @round_num = 1
     @human = HumanCodeMaker.new
     @codes = get_all_possible_codes
+    @guess = [1,1,2,2]
+    @clues = ''
     rounds
   end
 
@@ -34,15 +37,49 @@ class CpuCodeBreaker
   end
 
   def update_codes
-
+    x_num = clues.count('x')
+    o_num = clues.count('o')
+    p @codes
+    @codes = @codes.select do |code|
+               match_idx = []
+               count_matches = 0
+               code.each_with_index do |dij, i|
+                 if dij == @guess[i]
+                   count_matches += 1
+                   match_idx << i
+                 end
+               end
+               temp_code = code.select.with_index do |dij, idx|
+                             unless match_idx.include?(idx)
+                               true
+                             end
+               end
+               temp_guess = guess.select.with_index do |dij, idx|
+                              unless match_idx.include?(idx)
+                                true
+                              end
+              end
+              os_match = [1,2,3,4,5,6].all? do |dij|
+                                if temp_guess.count(dij) == temp_code.count(dij)
+                                  true
+                                end
+              end
+              if (count_matches == x_num) && (os_match)
+                true
+              else
+                false
+              end
+    end
+    p @codes
   end
 
   def round
-    guess = self.make_guess
-    p guess
-    puts "#{@round_num}: #{@human.get_clues(guess)}"
+    @guess = self.make_guess
+    p @guess
+    self.clues= @human.get_clues(@guess)
+    puts "#{@round_num}: #{@clues}"
 
-    if @human.get_clues(guess) == "x x x x"
+    if @human.get_clues(@guess) == "x x x x"
       puts "Code has been cracked!"
       return true
     end
@@ -52,7 +89,7 @@ class CpuCodeBreaker
     if @round_num == 1
       [1,1,2,2]
     else
-      codes.sample
+      @codes.sample
     end
   end
 end
