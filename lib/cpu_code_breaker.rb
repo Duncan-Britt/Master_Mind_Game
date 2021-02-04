@@ -72,7 +72,7 @@ class CpuCodeBreaker
                  end
                end
                count_matches == x_num && o_num == count_same
-    end
+    end 
   end
 
   def round
