@@ -1,14 +1,13 @@
 class CpuCodeBreaker
-  #private
+  # private
   attr_accessor :codes, :clues
   attr_reader :guess
 
-  public
   def initialize
     @round_num = 1
     @human = HumanCodeMaker.new
     @codes = get_all_possible_codes
-    @guess = [1,1,2,2]
+    @guess = [1, 1, 2, 2]
     @clues = ''
     rounds
   end
@@ -23,13 +22,14 @@ class CpuCodeBreaker
     end
     # filter out codes with unwanted digits
     arr_of_codes = arr_of_codes.select do |code|
-      code.none? { |dij| [7,8,9,0].include?(dij) }
+      code.none? { |dij| [7, 8, 9, 0].include?(dij) }
     end
   end
 
   def rounds
     until @round_num > 12
-      return if self.round
+      return if round
+
       update_codes
       @round_num += 1
     end
@@ -40,60 +40,92 @@ class CpuCodeBreaker
     x_num = clues.count('x')
     o_num = clues.count('o')
 
-    @codes = @codes.select do |code|
-               match_idx = []
-               count_matches = 0
-               code.each_with_index do |dij, i|
-                 if dij == @guess[i]
-                   count_matches += 1
-                   match_idx << i
-                 end
-               end
+    @codes = get_possible_codes(x_num, o_num, @codes)
+  end
 
-               temp_code = code.select.with_index do |dij, idx|
-                             !match_idx.include?(idx)
-               end
-               temp_guess = guess.select.with_index do |dij, idx|
-                              !match_idx.include?(idx)
-               end
+  def get_possible_codes(x_num, o_num, set)
+    set.select do |code|
+      match_idx = []
+      count_matches = 0
+      code.each_with_index do |dij, i|
+        if dij == @guess[i]
+          count_matches += 1
+          match_idx << i
+        end
+      end
 
-               count_same = 0 # tracking close matches for a given code compared to the guess
-               [1,2,3,4,5,6].each do |dij|
-                 if temp_code.include?(dij)
-                   if temp_guess.count(dij) <= temp_code.count(dij)
-                     temp_guess.count(dij).times do
-                       count_same += 1
-                     end
-                   else
-                     temp_code.count(dij).times do
-                       count_same += 1
-                     end
-                   end
-                 end
-               end
-               count_matches == x_num && o_num == count_same
-    end 
+      temp_code = code.select.with_index do |_dij, idx|
+        !match_idx.include?(idx)
+      end
+      temp_guess = guess.select.with_index do |_dij, idx|
+        !match_idx.include?(idx)
+      end
+
+      count_same = 0 # tracking close matches for a given code compared to the guess
+      [1, 2, 3, 4, 5, 6].each do |dij|
+        if temp_code.include?(dij)
+          if temp_guess.count(dij) <= temp_code.count(dij)
+            temp_guess.count(dij).times do
+              count_same += 1
+            end
+          else
+            temp_code.count(dij).times do
+              count_same += 1
+            end
+          end
+        end
+      end
+      count_matches == x_num && o_num == count_same
+    end
   end
 
   def round
-    @guess = self.make_guess
+    @guess = make_guess
     p @guess
-    #puts "All codes at this point\n\n\n\n #{@codes}"
-    self.clues= @human.get_clues(@guess)
+    # puts "All codes at this point\n\n\n\n #{@codes}"
+    self.clues = @human.get_clues(@guess)
     puts "#{@round_num}: #{@clues}"
 
-    if @human.get_clues(@guess) == "x x x x"
-      puts "Code has been cracked!"
-      return true
+    if @human.get_clues(@guess) == 'x x x x'
+      puts 'Code has been cracked!'
+      true
     end
   end
 
   def make_guess
     if @round_num == 1
-      [1,1,2,2]
+      [1, 1, 2, 2]
     else
-      #@codes.sample
+      best_guess
       @codes[0]
     end
+  end
+  # Minimax algorithm in progress
+  def best_guess
+    all_clues = ['x x x x', 'x x x', 'x x o o', 'x x o', 'x x', 'x o o o', 'x o o', 'x o', 'x', 'o o o o', 'o o o', 'o o', 'o', '']
+    smallest_set = codes
+  #  puts "codes: #{codes}, smallest_set: #{smallest_set}"
+    optimal_guess = []
+    codes.each do |code|
+      biggest_set = []
+      all_clues.each do |clue|
+        x_num = clue.count('x')
+        o_num = clue.count('o')
+        remaining_set = get_possible_codes(x_num, o_num, smallest_set)
+        puts "smallest_set length: #{smallest_set.length}, remaining_set length: #{remaining_set.length}"
+        if remaining_set.length > biggest_set.length
+          biggest_set = remaining_set
+        end
+      end
+      puts "biggest_set length: #{biggest_set.length}"
+      if biggest_set.length < smallest_set.length
+      #  puts "smallest set before: #{smallest_set}"
+        smallest_set = biggest_set
+      #  puts "smallest set after: #{smallest_set}"
+        optimal_guess = code
+      #  puts "optimal guess: #{optimal_guess}, code: #{code}"
+      end
+    end
+  #  puts "optimal_guess: #{optimal_guess}"
   end
 end

@@ -5,7 +5,7 @@ module Human
     input = input.map { |e| e.to_i }
     unless self.validate?(input)
       puts "Invalid input. Enter 4 digits (1 through 6)"
-      self.get_input
+      return self.get_input
     end
     input
   end
