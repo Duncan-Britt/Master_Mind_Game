@@ -43,12 +43,12 @@ class CpuCodeBreaker
     @codes = get_possible_codes(x_num, o_num, @codes)
   end
 
-  def get_possible_codes(x_num, o_num, set)
+  def get_possible_codes(x_num, o_num, set, g=@guess)
     set.select do |code|
       match_idx = []
       count_matches = 0
       code.each_with_index do |dij, i|
-        if dij == @guess[i]
+        if dij == g[i]
           count_matches += 1
           match_idx << i
         end
@@ -57,7 +57,7 @@ class CpuCodeBreaker
       temp_code = code.select.with_index do |_dij, idx|
         !match_idx.include?(idx)
       end
-      temp_guess = guess.select.with_index do |_dij, idx|
+      temp_guess = g.select.with_index do |_dij, idx|
         !match_idx.include?(idx)
       end
 
@@ -97,35 +97,29 @@ class CpuCodeBreaker
       [1, 1, 2, 2]
     else
       best_guess
-      @codes[0]
+      #@codes[0]
     end
   end
   # Minimax algorithm in progress
   def best_guess
     all_clues = ['x x x x', 'x x x', 'x x o o', 'x x o', 'x x', 'x o o o', 'x o o', 'x o', 'x', 'o o o o', 'o o o', 'o o', 'o', '']
-    smallest_set = codes
-  #  puts "codes: #{codes}, smallest_set: #{smallest_set}"
+    smallest_set = codes.dup
     optimal_guess = []
     codes.each do |code|
       biggest_set = []
       all_clues.each do |clue|
         x_num = clue.count('x')
         o_num = clue.count('o')
-        remaining_set = get_possible_codes(x_num, o_num, smallest_set)
-        puts "smallest_set length: #{smallest_set.length}, remaining_set length: #{remaining_set.length}"
+        remaining_set = get_possible_codes(x_num, o_num, smallest_set, code)
         if remaining_set.length > biggest_set.length
           biggest_set = remaining_set
         end
       end
-      puts "biggest_set length: #{biggest_set.length}"
-      if biggest_set.length < smallest_set.length
-      #  puts "smallest set before: #{smallest_set}"
+      if biggest_set.length <= smallest_set.length
         smallest_set = biggest_set
-      #  puts "smallest set after: #{smallest_set}"
         optimal_guess = code
-      #  puts "optimal guess: #{optimal_guess}, code: #{code}"
       end
     end
-  #  puts "optimal_guess: #{optimal_guess}"
+    optimal_guess
   end
 end
