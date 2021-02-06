@@ -16,5 +16,3 @@ class CpuCodeMaker
     @code
   end
 end
-
-#p CpuCodeMaker.new.guess_check([1,1,1,1])

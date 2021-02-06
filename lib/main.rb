@@ -18,8 +18,11 @@ class Main
       CpuCodeBreaker.new
     elsif input == 'i'
       puts "\n\n" +
-           "instructions will go here\n" +
-           "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\n\n"
+           "INSTRUCTIONS\n\n" +
+           "\e[1mPLAY AS CODE BREAKER\e[0m\n" +
+           "Enter a 4 digit numerical code. Each digit may be one of numbers 1 through 6. You will receive a response to your guess that may include x's and o's. Each 'x' indicates that one of your guesses was the right digit in the right place. Each 'o' indicates that one of your guesses was the right digit in the \e[3mwrong\e[0m place. You'll have 12 attempts to crack the secret code.\n\n" +
+           "\e[1mPLAY AS CODE MAKER\e[0m\n" +
+           "Enter a 4 digit code numerical code. Each digit may be one of numbers 1 through 6. The A.I. will crack the code. Resistance is futile.\n\n"
       self.make_or_break
     else
       puts "Invalid input."
