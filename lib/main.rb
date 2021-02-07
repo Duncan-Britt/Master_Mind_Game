@@ -10,13 +10,15 @@ class Main
   def make_or_break
     puts "Enter 'b' to be the code BREAKER\n" +
          "Enter 'm' to be the code MAKER\n" +
-         "Enter 'i' for instructions"
+         "Enter 'i' for instructions\n" +
+         "Enter 'a' for advanced options"
     input = gets.chomp.downcase
-    if input == 'b'
+    case input
+    when 'b'
       HumanCodeBreaker.new
-    elsif input == 'm'
+    when 'm'
       CpuCodeBreaker.new
-    elsif input == 'i'
+    when 'i'
       puts "\n\n" +
            "INSTRUCTIONS\n\n" +
            "\e[1mPLAY AS CODE BREAKER\e[0m\n" +
@@ -24,9 +26,25 @@ class Main
            "\e[1mPLAY AS CODE MAKER\e[0m\n" +
            "Enter a 4 digit code numerical code. Each digit may be one of numbers 1 through 6. The A.I. will crack the code. Resistance is futile.\n\n"
       self.make_or_break
-    else
-      puts "Invalid input."
+    when 'a'
+      advanced_options
       self.make_or_break
+    else
+      puts "\nInvalid input.\n\n"
+      self.make_or_break
+    end
+  end
+
+  def advanced_options
+    puts "Enter 'L' to change code length\n" +
+         "Enter 'C' to change number of colors (digits)\n" +
+         "Enter anything else to exit advanced options"
+    input = gets.chomp.downcase
+    case input
+    when 'l'
+      puts "do something"
+    when 'c'
+      puts "do something"
     end
   end
 end

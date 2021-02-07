@@ -100,7 +100,7 @@ class CpuCodeBreaker
       #@codes[0]
     end
   end
-  # Minimax algorithm in progress
+  # Minimax algorithm
   def best_guess
     all_clues = ['x x x x', 'x x x', 'x x o o', 'x x o', 'x x', 'x o o o', 'x o o', 'x o', 'x', 'o o o o', 'o o o', 'o o', 'o', '']
     smallest_set = codes.dup
@@ -110,7 +110,7 @@ class CpuCodeBreaker
       all_clues.each do |clue|
         x_num = clue.count('x')
         o_num = clue.count('o')
-        remaining_set = get_possible_codes(x_num, o_num, smallest_set, code)
+        remaining_set = get_possible_codes(x_num, o_num, codes.dup, code)
         if remaining_set.length > biggest_set.length
           biggest_set = remaining_set
         end
