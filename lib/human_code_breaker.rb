@@ -3,10 +3,10 @@ require_relative 'human_module.rb'
 
 class HumanCodeBreaker
   include Human
-  
+
   def initialize
     @round_num = 1
-    @ai = CpuCodeMaker.new
+    @ai = CpuCodeMakerVsHuman.new
     rounds
   end
 

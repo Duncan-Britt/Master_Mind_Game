@@ -3,9 +3,9 @@ class CpuCodeBreaker
   attr_accessor :codes, :clues
   attr_reader :guess
 
-  def initialize
+  def initialize(opponent=HumanCodeMaker.new)
     @round_num = 1
-    @human = HumanCodeMaker.new
+    @opponent = opponent
     @codes = get_all_possible_codes
     @guess = [1, 1, 2, 2]
     @clues = ''
@@ -83,10 +83,10 @@ class CpuCodeBreaker
     @guess = make_guess
     p @guess
     # puts "All codes at this point\n\n\n\n #{@codes}"
-    self.clues = @human.get_clues(@guess)
+    self.clues = @opponent.get_clues(@guess)
     puts "#{@round_num}: #{@clues}"
 
-    if @human.get_clues(@guess) == 'x x x x'
+    if @opponent.get_clues(@guess) == 'x x x x'
       puts 'Code has been cracked!'
       true
     end
@@ -97,7 +97,6 @@ class CpuCodeBreaker
       [1, 1, 2, 2]
     else
       best_guess
-      #@codes[0]
     end
   end
   # Minimax algorithm

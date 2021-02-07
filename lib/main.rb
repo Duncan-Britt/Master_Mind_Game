@@ -10,6 +10,7 @@ class Main
   def make_or_break
     puts "Enter 'b' to be the code BREAKER\n" +
          "Enter 'm' to be the code MAKER\n" +
+         "Enter 'q' for A.I. vs A.I\n" +
          "Enter 'i' for instructions\n" +
          "Enter 'a' for advanced options"
     input = gets.chomp.downcase
@@ -18,6 +19,8 @@ class Main
       HumanCodeBreaker.new
     when 'm'
       CpuCodeBreaker.new
+    when 'q'
+      CpuCodeBreaker.new(CpuCodeMakerVsAi.new)
     when 'i'
       puts "\n\n" +
            "INSTRUCTIONS\n\n" +
