@@ -1,5 +1,6 @@
 require_relative 'human_code_breaker.rb'
 require_relative 'human_code_maker.rb'
+require_relative 'advanced_options.rb'
 
 puts "Welcome to command line Mastermind!"
 
@@ -7,6 +8,13 @@ class Main
   def initialize
     self.make_or_break
   end
+
+  @@setting = Settings.new
+
+  def self.setting
+    @@setting
+  end
+
   def make_or_break
     puts "Enter 'b' to be the code BREAKER\n" +
          "Enter 'm' to be the code MAKER\n" +
@@ -45,7 +53,12 @@ class Main
     input = gets.chomp.downcase
     case input
     when 'l'
-      puts "do something"
+      puts "By default, codes are 4 digits long. Enter a number greater than 1 to set a new code length, or anything else to exit advanced options:\n"
+      input = gets.chomp.to_i
+      if input > 1
+        @@setting.code_length = input
+      end
+
     when 'c'
       puts "do something"
     end

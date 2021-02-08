@@ -1,5 +1,6 @@
 
 require_relative 'code_guess_response_module.rb'
+require_relative 'advanced_options.rb'
 
 class CpuCodeMaker
   include CodeGuessResponse

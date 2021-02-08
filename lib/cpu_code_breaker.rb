@@ -1,3 +1,6 @@
+require_relative 'advanced_options.rb'
+require_relative 'possible_responses.rb'
+
 class CpuCodeBreaker
   # private
   attr_accessor :codes, :clues
@@ -7,15 +10,23 @@ class CpuCodeBreaker
     @round_num = 1
     @opponent = opponent
     @codes = get_all_possible_codes
-    @guess = [1, 1, 2, 2]
+    @guess = get_first_guess
     @clues = ''
     rounds
+  end
+
+  def get_first_guess
+    if Main.setting.code_length == 4
+      [1, 1, 2, 2]
+    else
+      @codes[0]
+    end
   end
 
   def get_all_possible_codes
     arr_of_codes = []
     # push every num 1111 up to 6666 into array
-    1111.upto(6666) { |num| arr_of_codes << num }
+    code_length_num(1).upto(code_length_num(6)) { |num| arr_of_codes << num }
     # make each num in array an array of digits
     arr_of_codes = arr_of_codes.map do |num|
       num.to_s.chars.map { |dij| dij.to_i }
@@ -24,6 +35,15 @@ class CpuCodeBreaker
     arr_of_codes = arr_of_codes.select do |code|
       code.none? { |dij| [7, 8, 9, 0].include?(dij) }
     end
+  end
+
+  def code_length_num(dij)
+    code_arr = []
+    Main.setting.code_length.times do
+      code_arr.push(dij)
+    end
+    code = code_arr.join('')
+    code.to_i
   end
 
   def rounds
@@ -94,14 +114,15 @@ class CpuCodeBreaker
 
   def make_guess
     if @round_num == 1
-      [1, 1, 2, 2]
+      get_first_guess
     else
       best_guess
     end
   end
   # Minimax algorithm
   def best_guess
-    all_clues = ['x x x x', 'x x x', 'x x o o', 'x x o', 'x x', 'x o o o', 'x o o', 'x o', 'x', 'o o o o', 'o o o', 'o o', 'o', '']
+    all_clues = PossibleResponses.new.get_all_clues
+    puts "all_clues: #{all_clues}"
     smallest_set = codes.dup
     optimal_guess = []
     codes.each do |code|

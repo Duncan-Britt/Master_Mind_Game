@@ -1,6 +1,7 @@
 require_relative 'code_guess_response_module.rb'
 require_relative 'cpu_code_breaker.rb'
 require_relative 'human_module.rb'
+require_relative 'advanced_options.rb'
 
 class HumanCodeMaker
   include Human

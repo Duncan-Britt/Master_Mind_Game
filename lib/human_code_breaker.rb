@@ -1,5 +1,6 @@
 require_relative 'cpu_code_maker.rb'
 require_relative 'human_module.rb'
+require_relative 'advanced_options.rb'
 
 class HumanCodeBreaker
   include Human
