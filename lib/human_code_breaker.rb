@@ -23,9 +23,17 @@ class HumanCodeBreaker
     guess = self.get_input
     puts "#{@round_num}: #{@ai.get_clues(guess)}"
 
-    if @ai.get_clues(guess) == "x x x x"
+    if @ai.get_clues(guess) == victory_clues
       puts "Congrats, you won!"
       return true
     end
+  end
+
+  def victory_clues
+    clues = []
+    Main.setting.code_length.times do
+      clues.push('x')
+    end
+    clues = clues.join(' ')
   end
 end

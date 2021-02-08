@@ -13,7 +13,7 @@ class CpuCodeMaker
 
   private
   def number_generator
-    4.times { @code.push(rand(6)+1) }
+    Main.setting.code_length.times { @code.push(rand(6)+1) }
     @code
   end
 end

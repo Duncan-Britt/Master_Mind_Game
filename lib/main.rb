@@ -53,7 +53,7 @@ class Main
     input = gets.chomp.downcase
     case input
     when 'l'
-      puts "By default, codes are 4 digits long. Enter a number greater than 1 to set a new code length, or anything else to exit advanced options:\n"
+      puts "By default, codes are 4 digits long. Enter a number greater than 1 to set a new code length, or anything else to exit advanced options. Beware, code lengths greater than 4 may take a LONG time to run and are only recommended for human code breakers\n"
       input = gets.chomp.to_i
       if input > 1
         @@setting.code_length = input

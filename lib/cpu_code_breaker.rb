@@ -106,10 +106,18 @@ class CpuCodeBreaker
     self.clues = @opponent.get_clues(@guess)
     puts "#{@round_num}: #{@clues}"
 
-    if @opponent.get_clues(@guess) == 'x x x x'
+    if @opponent.get_clues(@guess) == victory_clues
       puts 'Code has been cracked!'
       true
     end
+  end
+
+  def victory_clues
+    clues = []
+    Main.setting.code_length.times do
+      clues.push('x')
+    end
+    clues = clues.join(' ')
   end
 
   def make_guess
@@ -122,7 +130,6 @@ class CpuCodeBreaker
   # Minimax algorithm
   def best_guess
     all_clues = PossibleResponses.new.get_all_clues
-    puts "all_clues: #{all_clues}"
     smallest_set = codes.dup
     optimal_guess = []
     codes.each do |code|
